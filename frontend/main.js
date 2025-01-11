@@ -39,9 +39,22 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
 });
 
 // Excluir um usuário
-async function deleteUser(id) {
-  await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
-  loadUsers();
+async function deleteUser(userId) {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}`, {
+      method: "DELETE",
+    });
+
+    if (response.status === 204) {
+      alert("Usuário excluído com sucesso!");
+      location.reload(); // Atualiza a lista de usuários
+    } else {
+      alert("Erro ao excluir usuário.");
+    }
+  } catch (error) {
+    console.error("Erro ao excluir usuário:", error);
+    alert("Erro ao conectar ao servidor.");
+  }
 }
 
 // Editar um usuário
@@ -57,3 +70,6 @@ async function editUser(id) {
 
   loadUsers();
 }
+
+window.deleteUser = deleteUser;
+window.editUser = editUser;
