@@ -23,6 +23,24 @@ function validatePassword(password) {
 if (currentPage === "list.html") {
   document.addEventListener("DOMContentLoaded", loadUsers);
 
+  const editModal = document.getElementById("editModal");
+  const closeModal = document.getElementById("closeModal");
+  const editForm = document.getElementById("editForm");
+
+  let userIdToEdit = null; // Armazena o ID do usuário sendo editado
+
+  // Fechar o modal ao clicar no "X"
+  closeModal.addEventListener("click", () => {
+    editModal.style.display = "none";
+  });
+
+  // Fechar o modal ao clicar fora dele
+  window.addEventListener("click", (event) => {
+    if (event.target === editModal) {
+      editModal.style.display = "none";
+    }
+  });
+
   async function loadUsers() {
     try {
       const response = await fetch(apiUrl);
@@ -39,7 +57,7 @@ if (currentPage === "list.html") {
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td>
-              <button onclick="editUser(${user.id})">Editar</button>
+              <button onclick="openEditModal(${user.id}, '${user.name}', '${user.email}')">Editar</button>
               <button onclick="deleteUser(${user.id})">Excluir</button>
             </td>
           </tr>`;
@@ -49,6 +67,52 @@ if (currentPage === "list.html") {
       alert("Erro ao carregar usuários.");
     }
   }
+
+  // Função para abrir o modal e preencher os campos
+  window.openEditModal = function (id, name, email) {
+    userIdToEdit = id;
+    document.getElementById("editName").value = name;
+    document.getElementById("editEmail").value = email;
+    editModal.style.display = "block";
+  };
+
+  // Submissão do formulário de edição
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("editName").value.trim();
+    const email = document.getElementById("editEmail").value.trim();
+
+    if (!validateName(name)) {
+      alert("O nome deve ter pelo menos 3 caracteres.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      alert("Por favor, insira um email válido.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/${userIdToEdit}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      });
+
+      if (response.ok) {
+        alert("Usuário atualizado com sucesso!");
+        editModal.style.display = "none";
+        loadUsers();
+      } else {
+        const errorData = await response.json();
+        alert("Erro ao editar usuário: " + JSON.stringify(errorData));
+      }
+    } catch (error) {
+      console.error("Erro ao editar usuário:", error);
+      alert("Erro ao conectar ao servidor.");
+    }
+  });
 
   window.deleteUser = async function (userId) {
     if (!confirm("Tem certeza que deseja excluir este usuário?")) return;
@@ -67,39 +131,7 @@ if (currentPage === "list.html") {
     }
   };
 
-  window.editUser = async function (id) {
-    const name = prompt("Novo nome:");
-    const email = prompt("Novo email:");
-
-    if (!validateName(name)) {
-      alert("O nome deve ter pelo menos 3 caracteres.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      alert("Por favor, insira um email válido.");
-      return;
-    }
-
-    try {
-      const response = await fetch(`${apiUrl}/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email }),
-      });
-
-      if (response.ok) {
-        alert("Usuário atualizado com sucesso!");
-        loadUsers();
-      } else {
-        const errorData = await response.json();
-        alert("Erro ao editar usuário: " + JSON.stringify(errorData));
-      }
-    } catch (error) {
-      console.error("Erro ao editar usuário:", error);
-      alert("Erro ao conectar ao servidor.");
-    }
-  };
+  loadUsers();
 }
 
 // Cadastro de usuário na página de registro
