@@ -1,55 +1,127 @@
+/* Estilo global */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
-}
-
-.container {
-  max-width: 800px;
-  margin: 50px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f4f4f9;
+  color: #333;
+  line-height: 1.6;
 }
 
 h1 {
   text-align: center;
+  margin-top: 20px;
+  color: #444;
 }
 
+/* Formulário de cadastro */
 form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-input,
-button {
-  padding: 10px;
+  max-width: 400px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #ffffff;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-button {
-  background-color: #28a745;
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  background: #5cb85c;
   color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
+}
+
+form button:hover {
+  background: #4cae4c;
+}
+
+/* Tabela de usuários */
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table thead {
+  background: #5cb85c;
+  color: white;
+}
+
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+table tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+table tbody tr:hover {
+  background: #f1f1f1;
+}
+
+/* Botões de ações */
+button {
+  padding: 8px 12px;
+  margin: 2px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 button:hover {
-  background-color: #218838;
+  opacity: 0.9;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+button[onclick^="editUser"] {
+  background: #0275d8;
+  color: white;
 }
 
-th,
-td {
-  text-align: left;
+button[onclick^="deleteUser"] {
+  background: #d9534f;
+  color: white;
+}
+
+/* Links entre páginas */
+a {
+  display: block;
+  text-align: center;
+  margin: 15px auto;
   padding: 10px;
-  border: 1px solid #ddd;
+  width: 200px;
+  text-decoration: none;
+  color: white;
+  background: #0275d8;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+a:hover {
+  background: #025aa5;
 }
