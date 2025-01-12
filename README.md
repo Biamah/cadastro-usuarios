@@ -120,6 +120,7 @@ npm install
 │   └── ...
 ├── frontend
 │   ├── index.html
+│   ├── list.html
 │   ├── main.js
 │   ├── style.css
 │   └── ...
